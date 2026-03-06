@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { db } from "../db/index.js";
-import { booksTable } from "../db/schema/Book.js";
-import { eq } from "drizzle-orm";
+import { booksTable} from "../db/schema/Book.js";
+
 import { AppError } from "../utils/AppError.js";
 import { sendResponse } from "../utils/sendResponse.js";
+import { and, asc, desc, eq } from "drizzle-orm";
+
 
 export const createBookController = async (req: Request, res: Response) => {
     const { title, author, category, description, totalCopies } = req.body;
@@ -66,3 +68,52 @@ export const createBookController = async (req: Request, res: Response) => {
         data: newBook
     });
 };
+
+export const getBooksController = async (req: Request, res: Response) => {
+    const { category, sort, title, author } = req.query;
+
+    const validCategories = [
+        "fiction", "non-fiction","technology", "science", "history", "biography", "architecture", "medical", "law", "business", "philosophy", "education"];
+
+    const filter: any[] = [];
+
+    if (title) {
+        filter.push(eq(booksTable.title, title.toString()));
+    }
+
+    if (author) {
+        filter.push(eq(booksTable.author, author.toString()));
+    }
+
+    if (category) {
+        const categoryValue = category.toString();
+
+        if (!validCategories.includes(categoryValue)) {
+            throw new AppError(400, `Invalid category. Allowed: ${validCategories.join(", ")}`);
+        }
+
+        filter.push(eq(booksTable.category, categoryValue as any));
+    }
+
+    const orderBy = sort === "desc" ? 
+        desc(booksTable.title) : 
+        asc(booksTable.title);
+
+    const query = db.select().from(booksTable);
+
+    if (filter.length > 0) {
+        query.where(and(...filter) as any);
+    }
+
+    const books = await query.orderBy(orderBy);
+
+    if (books.length === 0) {
+        throw new AppError(404, "No books found");
+    }
+
+    return sendResponse(res, {
+        statusCode: 200,
+        message: "Books retrieved successfully",
+        data: books
+    });
+}
