@@ -21,6 +21,7 @@ export const protectRoutes = (
     }
 
     req.userId = decoded.userId;
+    req.userRole = decoded.userRole;
 
     next();
   } catch (error) {

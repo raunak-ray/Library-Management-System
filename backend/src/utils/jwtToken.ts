@@ -4,11 +4,12 @@ import "dotenv/config";
 const jwtSecret = process.env.JWT_SECRET!;
 
 interface JwtPayload {
-    userId: string;
+    userId?: string;
+    userRole?: string;
 }
 
-export const generateToken = (userId: string) => {
-    return jwt.sign({userId}, jwtSecret, {expiresIn: "7d"})
+export const generateToken = (userId: string, userRole: string) => {
+    return jwt.sign({userId, userRole}, jwtSecret, {expiresIn: "7d"})
 }
 
 export const verifyToken = (token: string) => {

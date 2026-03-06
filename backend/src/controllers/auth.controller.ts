@@ -39,7 +39,7 @@ export const signupController = async (req: Request, res: Response) => {
       .values({ name, email, password: hashedPassword })
       .returning();
 
-  const token = generateToken(newUser[0].id);
+  const token = generateToken(newUser[0].id, newUser[0].role);
 
   storeTokenInCookie(res, token);
 
@@ -84,7 +84,7 @@ export const loginController = async (req: Request, res: Response) => {
       throw new AppError(401, "Invalid email or password");
   }
 
-  const token = generateToken(user[0].id);
+  const token = generateToken(user[0].id, user[0].role);
 
   storeTokenInCookie(res, token);
 
