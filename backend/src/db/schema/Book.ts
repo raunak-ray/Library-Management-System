@@ -1,17 +1,30 @@
 import { sql } from "drizzle-orm";
 import { check, integer, numeric, pgEnum, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 
-export const categoryEnum = pgEnum("categoryEnum", ["fiction", "technology", "architecture", "medical", "law"])
+export const categoryEnum = pgEnum("categoryEnum", [
+    "fiction",
+    "non-fiction",
+    "technology",
+    "science",
+    "history",
+    "biography",
+    "architecture",
+    "medical",
+    "law",
+    "business",
+    "philosophy",
+    "education"
+]);
 
 export const booksTable = pgTable("books", 
     {
         id: uuid().defaultRandom().primaryKey(),
-        title: varchar({length: 255}).notNull(),
+        title: varchar({length: 255}).notNull().unique(),
         author: varchar({length: 255}).notNull(),
         category: categoryEnum().notNull().default("fiction"),
         description: varchar({length: 255}).notNull(),
-        totalCopies: integer().default(1),
-        availableCopies: integer().default(1),
+        totalCopies: integer().default(1).notNull(),
+        availableCopies: integer().default(1).notNull(),
         coverImage: varchar({length: 255}).default("")
     },
     (table) => ({
