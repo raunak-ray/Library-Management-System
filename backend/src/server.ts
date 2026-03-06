@@ -3,6 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import authRoute from "./routes/auth.route.js";
+import bookRoute from "./routes/book.route.js";
 import cookieParser from "cookie-parser";
 
 
@@ -16,6 +17,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 app.use("/api/v1/auth", authRoute)
+app.use("/api/v1/books", bookRoute)
 
 app.use(errorHandler)
 
