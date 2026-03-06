@@ -46,7 +46,12 @@ export const signupController = async (req: Request, res: Response) => {
   sendResponse(res, {
       statusCode: 201,
       message: "User created successfully",
-      data: newUser[0]
+      data: {
+        id: newUser[0].id,
+        name: newUser[0].name,
+        email: newUser[0].email,
+        role: newUser[0].role
+      }
   });
 };
 
@@ -86,7 +91,53 @@ export const loginController = async (req: Request, res: Response) => {
   sendResponse(res, {
       statusCode: 200,
       message: "Login successful",
-      data: user[0]
+      data: {
+        id: user[0].id,
+        name: user[0].name,
+        email: user[0].email,
+        role: user[0].role
+      }
   });
 }
 
+export const fetchMe = async (req: Request, res: Response) => {
+  const {userId} = req;
+
+  if (!userId) {
+    throw new AppError(401, "Unauthorized");
+  }
+
+  const user = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId));
+
+  if (user.length === 0) {
+      throw new AppError(404, "User not found");
+  }
+
+  sendResponse(res, {
+      statusCode: 200,
+      message: "User fetched successfully",
+      data: {
+        id: user[0].id,
+        name: user[0].name,
+        email: user[0].email,
+        role: user[0].role
+      }
+  });
+}
+
+export const logoutController = (req: Request, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Logout successful",
+    data: {}
+  })
+}
