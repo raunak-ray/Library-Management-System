@@ -16,8 +16,6 @@ export const signupController = async (req: Request, res: Response) => {
 
   email = email.trim().toLowerCase();
   name = name.trim();
-  password = password.trim();
-
 
   const existingUser = await db
       .select()
@@ -63,11 +61,6 @@ export const loginController = async (req: Request, res: Response) => {
   }
 
   email = email.trim().toLowerCase();
-  password = password.trim();
-
-  if (password.length < 8) { 
-    throw new AppError(400, "Password must be at least 8 characters long");
-  }
 
   const user = await db
       .select()
