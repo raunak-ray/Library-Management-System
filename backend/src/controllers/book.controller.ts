@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db/index.js";
 import { booksTable} from "../db/schema/Book.js";
-
 import { AppError } from "../utils/AppError.js";
 import { sendResponse } from "../utils/sendResponse.js";
 import { and, asc, desc, eq } from "drizzle-orm";
@@ -137,4 +136,39 @@ export const getBooksController = async (req: Request, res: Response) => {
         message: "Books retrieved successfully",
         data: books
     });
+}
+
+export const deleteBookController = async (req: Request, res: Response) => {
+    const {userRole} = req;
+
+    if (userRole !== "admin" && userRole !== "librarian") {
+        throw new AppError(403, "Only admin and librarian can delete books");
+    }
+
+    const {id} = req.params;
+
+    const book = await db
+        .select()
+        .from(booksTable)
+        .where(eq(booksTable.id, id as any))
+        .then(result => result[0]);
+    
+    if (!book) {
+        throw new AppError(404, "Book not found");
+    }
+
+    await db
+        .delete(booksTable)
+        .where(eq(booksTable.id, id as any));
+    
+    const keys = await redis.keys("books:*");
+    if (keys.length > 0) {
+        await redis.del(...keys);
+    }
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Book deleted successfully",
+        data: null
+    });   
 }
