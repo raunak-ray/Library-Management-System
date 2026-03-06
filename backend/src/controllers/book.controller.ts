@@ -5,6 +5,8 @@ import { booksTable} from "../db/schema/Book.js";
 import { AppError } from "../utils/AppError.js";
 import { sendResponse } from "../utils/sendResponse.js";
 import { and, asc, desc, eq } from "drizzle-orm";
+import { generateBooksCacheKey } from "../utils/cacheKey.js";
+import { redis } from "../utils/redis.js";
 
 
 export const createBookController = async (req: Request, res: Response) => {
@@ -62,6 +64,11 @@ export const createBookController = async (req: Request, res: Response) => {
         .returning()
         .then(result => result[0]);
 
+    const keys = await redis.keys("books:*");
+    if (keys.length > 0) {
+        await redis.del(...keys);
+    }
+
     sendResponse(res, {
         statusCode: 201,
         message: "Book created successfully",
@@ -70,6 +77,18 @@ export const createBookController = async (req: Request, res: Response) => {
 };
 
 export const getBooksController = async (req: Request, res: Response) => {
+    const cacheKey = generateBooksCacheKey(req.query);
+
+    const cachedData = await redis.get(cacheKey);
+
+    if (cachedData) {
+        return sendResponse(res, {
+            statusCode: 200,
+            message: "Books retrieved successfully",
+            data: cachedData
+        })
+    }
+    
     const { category, sort, title, author } = req.query;
 
     const validCategories = [
@@ -110,6 +129,8 @@ export const getBooksController = async (req: Request, res: Response) => {
     if (books.length === 0) {
         throw new AppError(404, "No books found");
     }
+
+    await redis.set(cacheKey, books, {ex: 3600})
 
     return sendResponse(res, {
         statusCode: 200,
