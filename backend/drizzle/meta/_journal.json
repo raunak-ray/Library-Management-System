@@ -22,6 +22,13 @@
       "when": 1772811205832,
       "tag": "0002_smooth_ezekiel",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1772894568298,
+      "tag": "0003_premium_kronos",
+      "breakpoints": true
     }
   ]
 }

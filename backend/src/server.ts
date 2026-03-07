@@ -4,6 +4,7 @@ import cors from "cors";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import authRoute from "./routes/auth.route.js";
 import bookRoute from "./routes/book.route.js";
+import bookBorrowRoute from "./routes/bookBorrow.route.js";
 import cookieParser from "cookie-parser";
 
 
@@ -18,6 +19,7 @@ app.use(express.json())
 
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/books", bookRoute)
+app.use("/api/v1/borrow", bookBorrowRoute)
 
 app.use(errorHandler)
 
