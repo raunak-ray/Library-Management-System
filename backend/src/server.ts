@@ -5,6 +5,8 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import authRoute from "./routes/auth.route.js";
 import bookRoute from "./routes/book.route.js";
 import bookBorrowRoute from "./routes/bookBorrow.route.js";
+import adminRoute from "./routes/admin.route.js";
+import activityRoute from "./routes/activity.route.js";
 import cookieParser from "cookie-parser";
 
 
@@ -23,6 +25,8 @@ app.use(express.json())
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/books", bookRoute)
 app.use("/api/v1/borrow", bookBorrowRoute)
+app.use("/api/v1/admin", adminRoute)
+app.use("/api/v1/activity", activityRoute)
 
 app.use(errorHandler)
 
