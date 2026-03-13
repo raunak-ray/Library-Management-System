@@ -5,7 +5,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
   Tooltip,
   ResponsiveContainer,
 } from "recharts"
@@ -35,6 +34,7 @@ export function CategoryChart({ data }: CategoryChartProps) {
       <CardHeader>
         <CardTitle>Books by Category</CardTitle>
       </CardHeader>
+
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
@@ -42,11 +42,11 @@ export function CategoryChart({ data }: CategoryChartProps) {
               data={data}
               cx="50%"
               cy="50%"
-              labelLine={false}
-              label={({ category, count }) => `${category}: ${count}`}
               outerRadius={80}
-              fill="#8884d8"
               dataKey="count"
+              nameKey="category"
+              labelLine={false}
+              label={({ payload }) => `${payload.category}: ${payload.count}`}
             >
               {data.map((entry, index) => (
                 <Cell
@@ -55,6 +55,7 @@ export function CategoryChart({ data }: CategoryChartProps) {
                 />
               ))}
             </Pie>
+
             <Tooltip
               contentStyle={{
                 backgroundColor: "rgba(0,0,0,0.8)",

@@ -30,7 +30,7 @@ export default function Dashboard() {
   if (user?.role === "student") {
     const totalBooks = books?.length || 0
     const availableBooks = books?.filter((b) => b.availableCopies > 0).length || 0
-    const borrowedCount = borrowedBooks?.filter((b) => b.status === "active").length || 0
+    const borrowedCount = borrowedBooks?.filter((b) => b.status === true).length || 0
 
     return (
       <div className="space-y-8">
