@@ -18,7 +18,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: [
+        "http://localhost:3000", 
+        'https://library-management-system-six-rust.vercel.app'],
     credentials: true
 }));
 app.use(cookieParser())
