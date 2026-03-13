@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = process.env.NODE_ENV === "production" ? 
-                    "/api/v1" :
+                    "https://library-management-system-8k77.onrender.com/api/v1" :
                     "http://localhost:5500/api/v1";
 
 export const api = axios.create({
