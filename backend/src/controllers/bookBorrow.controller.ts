@@ -51,10 +51,11 @@ export const bookBorrowController = async (req: Request, res: Response) => {
             .then((res) => res[0]);
 
     await db.update(booksTable)
-            .set({availableCopies: book.availableCopies - 1})
+            .set({availableCopies: book.availableCopies - 1, status: true})
             .where(eq(booksTable.id, book.id));
 
     await redis.del(`borrowedBooks:${userId}`);
+    await redis.del(`activity:${userId}`);
 
     sendResponse(res, {
         statusCode: 201,
@@ -103,6 +104,7 @@ export const getBorrowedBooksController = async (req: Request, res: Response) =>
         author: borrow.books?.author,
         borrowDate: borrow.book_borrow?.borrowDate,
         returnDate: borrow.book_borrow?.returnDate,
+        status: borrow.books?.status
     }))
 
     await redis.set(`borrowedBooks:${userId}`, JSON.stringify(responseData), {ex: 3600});
@@ -161,6 +163,7 @@ export const returnBookController = async (req: Request, res: Response) => {
             .where(eq(booksTable.id, book.id));
 
     await redis.del(`borrowedBooks:${userId}`);
+    await redis.del(`activity:${userId}`);
 
     sendResponse(res, {
         statusCode: 200,

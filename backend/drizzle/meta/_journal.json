@@ -29,6 +29,13 @@
       "when": 1772894568298,
       "tag": "0003_premium_kronos",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1773251067796,
+      "tag": "0004_unusual_hammerhead",
+      "breakpoints": true
     }
   ]
 }

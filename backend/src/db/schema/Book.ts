@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { check, integer, numeric, pgEnum, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, check, integer, numeric, pgEnum, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const categoryEnum = pgEnum("categoryEnum", [
     "fiction",
@@ -25,7 +25,8 @@ export const booksTable = pgTable("books",
         description: varchar({length: 255}).notNull(),
         totalCopies: integer().default(1).notNull(),
         availableCopies: integer().default(1).notNull(),
-        coverImage: varchar({length: 255}).default("")
+        coverImage: varchar({length: 255}).default(""),
+        status: boolean().default(false)
     },
     (table) => ({
         copiesConstraint: check(
