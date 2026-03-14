@@ -1,0 +1,22 @@
+{
+  "name": "lms",
+  "version": "1.0.0",
+  "description": "A library management system build using express and nextjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm start --prefix backend",
+    "build": "npm install --prefix frontend && npm install --prefix backend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raunak-ray/Library-Management-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/raunak-ray/Library-Management-System/issues"
+  },
+  "homepage": "https://github.com/raunak-ray/Library-Management-System#readme"
+}

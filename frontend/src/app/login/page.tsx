@@ -9,30 +9,30 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 type Inputs = {
-  name: string;
   email: string;
   password: string;
 };
 
-export default function SignupPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
+export default function LoginPage() {
+  const { 
+    register, 
+    handleSubmit, 
+    formState: {isSubmitting, errors} 
   } = useForm<Inputs>();
 
   const router = useRouter();
 
   const onSubmit = async (data: Inputs) => {
     try {
-      const res = await api.post("/auth/signup", data);
+      const res = await api.post("/auth/login", data);
       console.log(res.data);
-      toast.success("Signup successfull");
+      toast.success("Login successful");
       router.push("/");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Signup failed");
+      toast.error(error.response?.data?.message || "Login failed");
       console.log(error);
     }
+    
   };
 
   return (
@@ -70,11 +70,11 @@ export default function SignupPage() {
             </div>
 
             <h2 className="text-2xl font-bold text-foreground mb-2">
-              Create account
+              Welcome Back
             </h2>
 
             <p className="text-muted-foreground">
-              Get started with LibraryOS
+              Sign in to your account
             </p>
           </div>
 
@@ -83,27 +83,6 @@ export default function SignupPage() {
             className="flex flex-col gap-4"
             onSubmit={handleSubmit(onSubmit)}
           >
-            {/* Name */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="name" className="text-foreground">
-                Name
-              </label>
-
-              <Input
-                id="name"
-                type="text"
-                placeholder="John Doe"
-                disabled={isSubmitting}
-                {...register("name", {
-                  required: "Name is required",
-                })}
-                className="bg-card border-border text-foreground placeholder:text-muted-foreground focus:border-primary"
-              />
-
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name.message}</p>
-              )}
-            </div>
 
             {/* Email */}
             <div className="flex flex-col gap-2">
@@ -116,7 +95,7 @@ export default function SignupPage() {
                 type="email"
                 placeholder="example@gmail.com"
                 disabled={isSubmitting}
-                {...register("email", {
+                {...register("email", { 
                   required: "Email is required",
                   pattern: {
                     value: /^\S+@\S+$/i,
@@ -127,7 +106,9 @@ export default function SignupPage() {
               />
 
               {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
+                <p className="text-sm text-red-500">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -142,13 +123,13 @@ export default function SignupPage() {
                 type="password"
                 placeholder="••••••••"
                 disabled={isSubmitting}
-                {...register("password", {
+                {...register("password", { 
                   required: "Password is required",
                   minLength: {
                     value: 8,
                     message: "Password must be at least 8 characters",
                   },
-                })}
+                 })}
                 className="bg-card border-border text-foreground placeholder:text-muted-foreground focus:border-primary"
               />
 
@@ -161,8 +142,9 @@ export default function SignupPage() {
 
             <Button
               type="submit"
+              className="w-full h-11 text-lg text-primary-foreground hover:opacity-80 cursor-pointer
+              "
               disabled={isSubmitting}
-              className="w-full h-11 text-lg text-primary-foreground hover:opacity-80 cursor-pointer"
             >
               {isSubmitting && (
                 <Loader className="mr-2 h-4 w-4 animate-spin" />
@@ -174,14 +156,11 @@ export default function SignupPage() {
 
         <div className="flex items-center justify-center mt-4 ">
           <span className="text-sm md:text-lg text-muted-foreground">
-            Already have an account?
-          </span>
-          <Button
-            variant="link"
-            onClick={() => router.push("/login")}
-            className="cursor-pointer text-sm md:text-lg"
-          >
-            Sign In
+            Don&apos;t have an account?
+          </span> 
+          <Button variant="link" onClick={() => router.push("/signup")}
+            className="cursor-pointer text-sm md:text-lg">
+            Sign Up
           </Button>
         </div>
       </div>
