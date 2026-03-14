@@ -5,36 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1772789283010,
-      "tag": "0000_flimsy_molecule_man",
+      "when": 1773490947173,
+      "tag": "0000_ambiguous_mystique",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1772810126022,
-      "tag": "0001_plain_gideon",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1772811205832,
-      "tag": "0002_smooth_ezekiel",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1772894568298,
-      "tag": "0003_premium_kronos",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1773251067796,
-      "tag": "0004_unusual_hammerhead",
+      "when": 1773491228320,
+      "tag": "0001_silky_skullbuster",
       "breakpoints": true
     }
   ]

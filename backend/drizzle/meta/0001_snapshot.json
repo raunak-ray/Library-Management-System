@@ -1,6 +1,6 @@
 {
-  "id": "985094e3-cd52-49c5-bdb6-22d3ae1d9f98",
-  "prevId": "8067a134-e69c-499e-8b9a-273c93d0b6db",
+  "id": "9b6f06e8-9910-4e93-9f78-76112c3dfc2e",
+  "prevId": "ff36a6af-9741-4b53-ae43-a3137d44b2f5",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -61,6 +61,13 @@
           "primaryKey": false,
           "notNull": false,
           "default": "''"
+        },
+        "status": {
+          "name": "status",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         }
       },
       "indexes": {},
@@ -82,6 +89,78 @@
           "value": "\"books\".\"totalCopies\" >= 0 AND \"books\".\"availableCopies\" >= 0 AND \"books\".\"availableCopies\" <= \"books\".\"totalCopies\""
         }
       },
+      "isRLSEnabled": false
+    },
+    "public.book_borrow": {
+      "name": "book_borrow",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "bookId": {
+          "name": "bookId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "borrowDate": {
+          "name": "borrowDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "returnDate": {
+          "name": "returnDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "book_borrow_bookId_books_id_fk": {
+          "name": "book_borrow_bookId_books_id_fk",
+          "tableFrom": "book_borrow",
+          "tableTo": "books",
+          "columnsFrom": [
+            "bookId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "book_borrow_userId_users_id_fk": {
+          "name": "book_borrow_userId_users_id_fk",
+          "tableFrom": "book_borrow",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
       "isRLSEnabled": false
     },
     "public.users": {
@@ -145,10 +224,17 @@
       "schema": "public",
       "values": [
         "fiction",
+        "non-fiction",
         "technology",
+        "science",
+        "history",
+        "biography",
         "architecture",
         "medical",
-        "law"
+        "law",
+        "business",
+        "philosophy",
+        "education"
       ]
     },
     "public.userRole": {
